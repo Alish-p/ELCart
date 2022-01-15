@@ -1,11 +1,23 @@
+import { useEffect } from 'react';
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
-import products from '../products';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import { fetchProduct } from '../redux/Slices/ProductItem';
 
 const ProductScreen = () => {
   const { id } = useParams();
-  const product = products.find((p) => p._id === id);
+  const dispatch = useDispatch();
+
+  const product = useSelector((state) => state.productItem.product);
+  const loading = useSelector((state) => state.productItem.loading);
+  const error = useSelector((state) => state.productItem.error);
+
+  useEffect(() => {
+    dispatch(fetchProduct(id));
+  }, []);
 
   const {
     image,
@@ -19,8 +31,19 @@ const ProductScreen = () => {
     numReviews,
   } = product;
 
+  if (loading) return <Loader />;
+  if (error)
+    return (
+      <Message>
+        <h3>{error}</h3>
+      </Message>
+    );
+
   return (
     <div>
+      <Link className="btn btn-light my-3" to="/">
+        <i class="fas fa-angle-left"></i> Go Back
+      </Link>
       <Row>
         <Col lg={6}>
           <Image fluid src={image} alt="product" rounded />
