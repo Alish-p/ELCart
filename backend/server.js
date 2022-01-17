@@ -11,8 +11,12 @@ app.get('/', (req, res) => {
   res.send('Api running...');
 });
 
+// middlewares
+app.use(express.json());
+
 // All Routes
 app.use('/api/products', require('./routes/product'));
+app.use('/api/users', require('./routes/user'));
 
 // middlewares
 app.use(notFound);

@@ -7,7 +7,7 @@
     "start": "node backend/server",
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \" npm run server\" \" npm run client\" "
+    "dev": "concurrently \" npm run start\" \" npm run client\" "
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "dotenv": "^11.0.0",
     "express": "^4.17.2",
     "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.6"
   },
   "devDependencies": {

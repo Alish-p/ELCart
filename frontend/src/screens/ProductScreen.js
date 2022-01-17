@@ -1,15 +1,27 @@
-import { useEffect } from 'react';
-import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Button,
+  Card,
+  Form,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { fetchProduct } from '../redux/Slices/ProductItem';
+import { addToCart } from '../redux/Slices/Cart';
 
 const ProductScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [qty, setQty] = useState(1);
 
   const product = useSelector((state) => state.productItem.product);
   const loading = useSelector((state) => state.productItem.loading);
@@ -39,10 +51,26 @@ const ProductScreen = () => {
       </Message>
     );
 
+  const quantitySelectOption = () => {
+    // Showing max 5 values
+    const count = Math.min(countInStock || 0, 5);
+
+    return [...Array(count).keys()].map((i) => (
+      <option key={i + 1} value={i + 1}>
+        {i + 1}
+      </option>
+    ));
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ product, qty }));
+    navigate('/cart');
+  };
+
   return (
     <div>
       <Link className="btn btn-light my-3" to="/">
-        <i class="fas fa-angle-left"></i> Go Back
+        <i className="fas fa-angle-left"></i> Go Back
       </Link>
       <Row>
         <Col lg={6}>
@@ -82,17 +110,37 @@ const ProductScreen = () => {
                   <Col>{countInStock > 0 ? 'In Stock' : 'Out of Stock'}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item className="p-3">
-                <Row>
-                  <Button
-                    variant="dark"
-                    className="btn-block"
-                    disabled={countInStock <= 0}
-                  >
-                    Add to Cart
-                  </Button>
-                </Row>
-              </ListGroup.Item>
+              {countInStock !== 0 && (
+                <ListGroup.Item className="p-3">
+                  <Row>
+                    <Col lg={5}>Quantity:</Col>
+                    <Col lg={7}>
+                      <Form.Select
+                        aria-label="select quantity"
+                        value={qty}
+                        onChange={(e) => setQty(+e.target.value)}
+                      >
+                        {quantitySelectOption()}
+                      </Form.Select>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
+
+              {countInStock !== 0 && (
+                <ListGroup.Item className="p-3">
+                  <Row>
+                    <Button
+                      variant="dark"
+                      className="btn-block"
+                      disabled={countInStock <= 0}
+                      onClick={handleAddToCart}
+                    >
+                      Add to Cart
+                    </Button>
+                  </Row>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
