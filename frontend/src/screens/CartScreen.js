@@ -7,7 +7,7 @@ import {
   Form,
   Card,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Message from '../components/Message';
 
@@ -16,8 +16,19 @@ import CartItem from '../components/CartItem';
 
 const CartScreen = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const user = useSelector((state) => state.user.userInfo);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const checkoutHandler = () => {
+    // logged in
+    if (user._id) {
+      navigate('/shipping');
+    } else {
+      navigate('/login?redirect=shipping');
+    }
+  };
 
   return (
     <div>
@@ -54,7 +65,7 @@ const CartScreen = () => {
                   type="button"
                   className="btn-block"
                   disabled={cartItems.length === 0}
-                  // onClick={checkoutHandler}
+                  onClick={checkoutHandler}
                 >
                   Proceed To Checkout
                 </Button>

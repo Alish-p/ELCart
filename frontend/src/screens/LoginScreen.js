@@ -21,12 +21,8 @@ const LoginScreen = () => {
   const loading = useSelector((state) => state.user.loading);
   const { _id } = useSelector((state) => state.user.userInfo);
 
-  console.log(_id);
-
   useEffect(() => {
     if (_id) {
-      console.log('calling from ');
-      console.log(_id);
       Navigate(`/${redirect}`);
     }
   }, [searchParams, _id]);

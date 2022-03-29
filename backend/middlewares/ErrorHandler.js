@@ -9,7 +9,7 @@ const handleCastErrorDB = (err) => {
 
 const handleDuplicateFieldsDB = (err) => {
   const value = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
-  const message = `Duplicate field value: ${value}. Please use anothe value!`;
+  const message = ` ${value} already Exist. Please use anothe value!`;
   const error = new Error(message);
   error.status = 400;
   return error;

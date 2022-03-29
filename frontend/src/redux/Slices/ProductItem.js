@@ -16,7 +16,15 @@ export const fetchProduct = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  product: {},
+  product: {
+    price: '',
+    countInStock: '',
+    name: '',
+    description: '',
+    image: '',
+    brand: '',
+    category: '',
+  },
   error: '',
 };
 
@@ -27,7 +35,6 @@ export const productItem = createSlice({
   extraReducers: {
     [fetchProduct.pending]: (state) => {
       state.loading = true;
-      state.product = {};
     },
     [fetchProduct.fulfilled]: (state, action) => {
       state.product = action.payload;

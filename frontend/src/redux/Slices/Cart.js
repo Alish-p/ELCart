@@ -5,7 +5,6 @@ export const addToCart = createAsyncThunk(
   'cart/addToCart',
   async ({ product, qty }) => {
     const item = { ...product, qty };
-    console.log(item);
 
     let items = localStorage.getItem('cart');
 
@@ -41,9 +40,28 @@ export const removeFromCart = createAsyncThunk(
   }
 );
 
+export const saveShippingAddress = createAsyncThunk(
+  'cart/saveShippingAddress',
+  async (address) => {
+    localStorage.setItem('shippingAddress', JSON.stringify(address));
+
+    return address;
+  }
+);
+export const savePaymentMethod = createAsyncThunk(
+  'cart/savePaymentMethod',
+  async ({ payment }) => {
+    localStorage.setItem('paymentMethod', JSON.stringify(payment));
+
+    return payment;
+  }
+);
+
 const initialState = {
   // fetch from ls
   cartItems: JSON.parse(localStorage.getItem('cart')) || [],
+  shippingAddress: JSON.parse(localStorage.getItem('shippingAddress')) || null,
+  paymentMethod: JSON.parse(localStorage.getItem('paymentMethod')) || null,
   error: '',
 };
 
@@ -65,6 +83,12 @@ export const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter(
         (item) => item._id !== payload.id
       );
+    },
+    [saveShippingAddress.fulfilled]: (state, { payload }) => {
+      state.shippingAddress = payload;
+    },
+    [savePaymentMethod.fulfilled]: (state, { payload }) => {
+      state.paymentMethod = payload;
     },
   },
 });

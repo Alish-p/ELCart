@@ -28,7 +28,7 @@ const admin = (req, res, next) => {
     next();
   } else {
     const err = new Error('Not authorized as an admin');
-    err.status(401);
+    err.status = 401;
     next(err);
   }
 };

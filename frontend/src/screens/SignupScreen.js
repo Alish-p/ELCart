@@ -12,6 +12,7 @@ import Message from '../components/Message';
 import TextField from '../Utils/FormComponents/TextField';
 import FormContainer from '../components/FormContainer';
 import { useEffect } from 'react';
+import Loader from '../components/Loader';
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -24,12 +25,8 @@ const SignUp = () => {
   const loading = useSelector((state) => state.user.loading);
   const { _id } = useSelector((state) => state.user.userInfo);
 
-  console.log(_id);
-
   useEffect(() => {
     if (_id) {
-      console.log('calling from ');
-      console.log(_id);
       Navigate(`/${redirect}`);
     }
   }, [searchParams, _id]);
@@ -42,7 +39,6 @@ const SignUp = () => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
     dispatch(register(values));
     setSubmitting(false);
   };
@@ -51,7 +47,7 @@ const SignUp = () => {
     <FormContainer>
       <h2 className="mt-3 mb-5 text-center">User Register</h2>
       {error && <Message variant="danger">{error}</Message>}
-
+      {loading && <Loader />}
       <Formik
         initialValues={initialvalues}
         onSubmit={handleSubmit}

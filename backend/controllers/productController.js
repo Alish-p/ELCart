@@ -21,3 +21,35 @@ module.exports.fetchProduct = asyncHandler(async (req, res) => {
     res.status(404).json({ message: 'Product Not Found' });
   }
 });
+
+module.exports.deleteProduct = asyncHandler(async (req, res) => {
+  const product = await ProductModel.findByIdAndDelete(req.params.id);
+
+  if (product) {
+    res.status(200).json(product);
+  } else {
+    res.status(404).json({ message: 'Product Not Found' });
+  }
+});
+
+module.exports.updateProduct = asyncHandler(async (req, res) => {
+  const product = await ProductModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true, runValidators: true }
+  );
+
+  if (product) {
+    res.status(200).json(product);
+  } else {
+    res.status(404).json({ message: 'Product Not Found' });
+  }
+});
+
+module.exports.addProduct = asyncHandler(async (req, res) => {
+  const user = req.user._id;
+  const product = new ProductModel({ ...req.body, user });
+  const createdProduct = await product.save();
+
+  res.status(201).json(createdProduct);
+});

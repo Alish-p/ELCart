@@ -8,7 +8,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const { _id, name } = useSelector((state) => state.user.userInfo);
+  const { _id, name, isAdmin } = useSelector((state) => state.user.userInfo);
 
   const handleLogut = () => {
     dispatch(logoutUser());
@@ -30,6 +30,22 @@ const Header = () => {
                   <i className="fas fa-shopping-cart" /> Cart
                 </Nav.Link>
               </LinkContainer>
+
+              {_id && isAdmin && (
+                <>
+                  <NavDropdown title="Admin" id="Admin-dropdown">
+                    <LinkContainer to={'/admin/userList'}>
+                      <NavDropdown.Item>View Users</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to={'/admin/productList'}>
+                      <NavDropdown.Item>View Products</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to={'/admin/orderList'}>
+                      <NavDropdown.Item>View Orders</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                </>
+              )}
               {_id ? (
                 <>
                   <NavDropdown title={name} id="profile-dropdown">
