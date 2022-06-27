@@ -1,8 +1,8 @@
-import { Col, Image, ListGroup, Row, Form, Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { addToCart, removeFromCart } from '../redux/Slices/Cart';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { Col, Image, ListGroup, Row, Form, Button } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { addToCart, removeFromCart } from "../redux/Slices/Cart";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 const CartItem = ({ item }) => {
   const { _id, image, name, price, countInStock } = item;
@@ -21,6 +21,8 @@ const CartItem = ({ item }) => {
       </option>
     ));
   };
+
+  // dummy
 
   return (
     <ListGroup.Item key={_id}>
